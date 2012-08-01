@@ -1,3 +1,4 @@
-<?php 
+<?php
+
 include ("layout/header.html");
 ?>

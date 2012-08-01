@@ -1,55 +1,108 @@
 .header {
     position: relative;
-    top:0px;
+    top: 0px;
     height: 82px;
     background: url(img/bg-header.png) repeat-x;
 }
-#info{
+
+#info {
     height: 140px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
     background-color: #F7F7F7;
 }
-#avatar{
+
+#avatar {
     height: 48px;
     width: 48px;
     float: left;
 }
-#main-menu{
-    min-height: 350px;
+
+#main-menu {
+    min-height: 380px;
     background-color: #FFFFFF;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
 }
-#main{
-    min-height: 350px;
-    background-color: #B6CDF0;
 
-}
-#search{
-    padding-left: 10px;
-}
-#unfollow{
-    padding-left: 10px;
+#main-result {
+    min-height: 380px;
+    width: 540px;
+    background-color: #FFFFFF;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 
-body{
+#main {
+    min-height: 380px;
+    padding-right: 0px;
+    background-color: #b6cdf0;
+
+}
+
+#search {
+    padding-left: 10px;
+}
+
+#unfollow {
+    padding-left: 10px;
+}
+
+#no-border {
+    border: none;
+    box-shadow: none;
+}
+
+body {
     background-image: none;
     padding-top: 0px;
     background-color: #b6cdf0;
-    font-family: century gothic, arial; 
+    font-family: century gothic, arial;
     font-size: 14px;
 }
-img{
+
+img {
     margin-left: 10px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
 }
 
-.bar{
+.connect {
+    margin-top: 15px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+}
+
+.block_image {
+    height: 350px;
+    margin-top: 15px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+}
+
+.well {
+    background-color: #FFF;
+}
+
+.people {
+    width: 348px;
+    height: 261px;
+}
+
+#bar {
+    background-color: #EFEFEF;
+    border: none;
+    color: #000;
+}
+.bar {
     width: 920px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -57,41 +110,69 @@ img{
     background-color: #EFEFEF;
     margin-left: 10px;
 }
-.text-center{
+
+.text-center {
     text-align: center;
 }
-.content-tab{
-    padding-left: 5px; 
+
+.content-tab {
+    padding-left: 5px;
     padding-top: 5px;
 }
-.content{
-    padding-left: 5px; 
+
+.content {
+    padding-left: 5px;
 }
-.field-main{
+
+.field-main {
     padding-top: 10px;
 }
-#fllw{
-    margin-left: 80px; 
-    min-width: 138px;
+
+#fllw {
+    margin-left: 80px;
+    min-width: 139px;
 }
-.left{
+
+.left {
     margin-left: 10px;
 }
-.top{
+
+.top {
     margin-top: 5px;
 }
-.mg-top{
+
+.mg-top {
     margin-top: 10px;
 }
-.no-padding{
+
+.no-padding {
     padding-left: 0px;
 }
-.main{
+
+.main {
     min-height: 355px;
 }
-.right{
- padding-right: 20px;   
+
+.right {
+    padding-right: 20px;
 }
-.pad-top{
+
+.pad-top {
     padding-top: 10px;
+}
+#config{
+    height: 200px;
+}
+#connect{
+    height: 200px;
+}
+#mg-connect{
+    margin-top: 71px;
+}
+.avatar {
+    height: 48px;
+    width: 48px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
