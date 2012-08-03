@@ -1,0 +1,178 @@
+.header {
+    position: relative;
+    top: 0px;
+    height: 82px;
+    background: url(img/bg-header.png) repeat-x;
+}
+
+#info {
+    height: 140px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+}
+
+#avatar {
+    height: 48px;
+    width: 48px;
+    float: left;
+}
+
+#main-menu {
+    min-height: 380px;
+    background-color: #FFFFFF;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+#main-result {
+    min-height: 380px;
+    width: 540px;
+    background-color: #FFFFFF;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+#main {
+    min-height: 380px;
+    padding-right: 0px;
+    background-color: #b6cdf0;
+
+}
+
+#search {
+    padding-left: 10px;
+}
+
+#unfollow {
+    padding-left: 10px;
+}
+
+#no-border {
+    border: none;
+    box-shadow: none;
+}
+
+body {
+    background-image: none;
+    padding-top: 0px;
+    background-color: #b6cdf0;
+    font-family: century gothic, arial;
+    font-size: 14px;
+}
+
+img {
+    margin-left: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.connect {
+    margin-top: 15px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+}
+
+.block_image {
+    height: 350px;
+    margin-top: 15px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #F7F7F7;
+}
+
+.well {
+    background-color: #FFF;
+}
+
+.people {
+    width: 348px;
+    height: 261px;
+}
+
+#bar {
+    background-color: #EFEFEF;
+    border: none;
+    color: #000;
+}
+.bar {
+    width: 920px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    background-color: #EFEFEF;
+    margin-left: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.content-tab {
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.content {
+    padding-left: 5px;
+}
+
+.field-main {
+    padding-top: 10px;
+}
+
+#fllw {
+    margin-left: 80px;
+    min-width: 139px;
+}
+
+.left {
+    margin-left: 10px;
+}
+
+.top {
+    margin-top: 5px;
+}
+
+.mg-top {
+    margin-top: 10px;
+}
+
+.no-padding {
+    padding-left: 0px;
+}
+
+.main {
+    min-height: 355px;
+}
+
+.right {
+    padding-right: 20px;
+}
+
+.pad-top {
+    padding-top: 10px;
+}
+#config{
+    height: 200px;
+}
+#connect{
+    height: 200px;
+}
+#mg-connect{
+    margin-top: 71px;
+}
+.avatar {
+    height: 48px;
+    width: 48px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
