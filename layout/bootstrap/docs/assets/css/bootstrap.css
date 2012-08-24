@@ -165,13 +165,13 @@ body {
 }
 
 a {
-  color: #0088cc;
+  color: #F7F7F7;
   text-decoration: none;
 }
 
 a:hover {
-  color: #005580;
-  text-decoration: underline;
+  color: #0089E0;
+  text-decoration: none;
 }
 
 .row {
@@ -273,11 +273,11 @@ a:hover {
 }
 
 .offset6 {
-  margin-left: 500px;
+  margin-left: 490px;
 }
 
 .offset5 {
-  margin-left: 420px;
+  margin-left: 430px;
 }
 
 .offset4 {

@@ -23,17 +23,3 @@ unset($_SESSION['twitter_oauth_token']);
 unset($_SESSION['twitter_oauth_token_secret']);
 
 header('Location: '.$_SESSION['HTTP_REFERER']);
-
-/*
-//If HTTP response is 200 continue otherwise send to connect page to retry
-if (200 == $connection->http_code) {
-  	//The user has been verified and the access tokens can be saved for future use
-	header('Location: validation.php');
-}
-else {
-  	//Save HTTP status for error dialog on connnect page.
-  	header('Location: '.$_SESSION['HTTP_REFERER']);
-}
-*/
-
-?>
