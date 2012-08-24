@@ -52,7 +52,8 @@ a.lang {
     min-height: 218px;
     margin-top: 33px;
 }
-#rights{
+
+#rights {
     color: #999;
 }
 
@@ -64,6 +65,7 @@ a.lang {
     height: 38px;
     width: 515px;
 }
+
 .box-logo {
     background-color: #0b0b0b;
     -webkit-border-radius: 4px;
@@ -86,6 +88,7 @@ a.lang {
     width: 110px;
     height: 76px;
     margin-left: 10px;
+    margin-top: 8px;
 }
 
 #ft-row {
