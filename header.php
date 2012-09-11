@@ -16,4 +16,3 @@ if (isset($_COOKIE["LANG"])) {
     $date = "m/d/Y H:i";
 }
 include ("layout/header.html");
-//echo '<script src="http://platform.twitter.com/anywhere.js?id='. $_COOKIE['KEY'] .'&v=1" type="text/javascript"></script>';
