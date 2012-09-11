@@ -150,6 +150,13 @@ img {
     border-radius: 8px;
 }
 
+#acor1, #acor2, #acor3, #acor4, #acor5, #acor6, #acor7, #acor8, #acor9, #acor10, #acor11{
+    color: #0089E0;
+}
+
+#acor1:hover, #acor2:hover, #acor3:hover, #acor4:hover, #acor5:hover, #acor6:hover, #acor7:hover, #acor8:hover, #acor9:hover, #acor10:hover, #acor11:hover{
+    color: #0052a1;
+}
 #info {
     height: 140px;
     -webkit-border-radius: 8px;
