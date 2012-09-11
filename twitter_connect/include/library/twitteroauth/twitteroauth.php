@@ -87,7 +87,7 @@ class TwitterOAuth {
   /**
    * Get the authorize URL
    *
-   * @returns a string
+   * @returns string
    */
   function getAuthorizeURL($token, $sign_in_with_twitter = TRUE) {
     if (is_array($token)) {

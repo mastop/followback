@@ -3,7 +3,8 @@ class Twitter_class
 {
     var $twitter_token;
     var $twitter_token_secret;
-    function Twitter_class ()
+
+    function Twitter_class()
     {
         $tmp = $_SESSION['twitter_access_token'];
         $token = $tmp['oauth_token'];
@@ -11,7 +12,8 @@ class Twitter_class
         $this->twitter_token = $token;
         $this->twitter_token_secret = $token_secret;
     }
-    function getLoginData ()
+
+    function getLoginData()
     {
         $tmp = $_SESSION['twitter_access_token'];
         $data['token'] = $tmp['oauth_token'];
@@ -20,21 +22,24 @@ class Twitter_class
         $data['screen_name'] = $tmp['screen_name'];
         return $data;
     }
-    function isConnected ()
+
+    function isConnected()
     {
         if ($_SESSION['twitter_access_token'])
             return 1;
         else
             return 0;
     }
-    function getUserData ($criteria)
+
+    function getUserData($criteria)
     {
         $user_id = $criteria['user_id'];
         $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $this->twitter_token, $this->twitter_token_secret);
         $content = $connection->get("users/show", $criteria);
         return $content;
     }
-    function getFriends ($criteria = '')
+
+    function getFriends($criteria = '')
     {
         $user_id = $criteria['user_id'];
         $screen_name = $criteria['screen_name'];
@@ -48,9 +53,10 @@ class Twitter_class
         $users['users'] = $this->formatUsersContent($content->users);
         return $users;
     }
-    function formatTwitterUsers ($users2)
+
+    function formatTwitterUsers($users2)
     {
-        for ($i = 0; $i < count($users2); $i ++) {
+        for ($i = 0; $i < count($users2); $i++) {
             $id = $users2[$i]['user_id'];
             $name = $users2[$i]['screen_name'];
             $picture = $users2[$i]['profile_image_url'];
@@ -62,7 +68,8 @@ class Twitter_class
         }
         return $users;
     }
-    function getFollowers ($criteria = '')
+
+    function getFollowers($criteria = '')
     {
         $user_id = $criteria['user_id'];
         $screen_name = $criteria['screen_name'];
@@ -76,7 +83,8 @@ class Twitter_class
         $users['users'] = $this->formatUsersContent($content->users);
         return $users;
     }
-    function formatUsersContent ($content)
+
+    function formatUsersContent($content)
     {
         $i = 0;
         if (count($content) > 0) {
@@ -98,12 +106,13 @@ class Twitter_class
                 $users[$i]['status'] = $value->status->text;
                 $users[$i]['status_id'] = $value->status->id;
                 $users[$i]['status_date'] = $value->status->created_at;
-                $i ++;
+                $i++;
             }
         }
         return $users;
     }
-    function displayUsersIcons ($criteria)
+
+    function displayUsersIcons($criteria)
     {
         $users = $criteria['users'];
         $nb_display = $criteria['nb_display'];
@@ -113,7 +122,7 @@ class Twitter_class
         if ($nb_display > count($users) || $nb_display == '')
             $nb_display = count($users); //display value never bigger than nb users
         $display = '';
-        for ($i = 0; $i < $nb_display; $i ++) {
+        for ($i = 0; $i < $nb_display; $i++) {
             $name = $users[$i]['name'];
             $picture = $users[$i]['picture'];
             $url = $users[$i]['url'];
@@ -123,7 +132,8 @@ class Twitter_class
         }
         return $display;
     }
-    function updateTwitterStatus ($criteria)
+
+    function updateTwitterStatus($criteria)
     {
         $status = $criteria['status'];
         $token = $criteria['token'];
@@ -142,90 +152,100 @@ class Twitter_class
         }
         return $result;
     }
-    function follow ($name)
+
+    function follow($name)
     {
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
             //$connection->get('account/verify_credentials');
-            $result = $connection->post('friendships/create/'.$name, array('screen_name'=>$name));
+            $result = $connection->post('friendships/create/' . $name, array('screen_name' => $name));
         }
         return $result;
     }
-    function unfollow ($name)
+
+    function unfollow($name)
     {
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
             //$connection->get('account/verify_credentials');
-            $result = $connection->post('friendships/destroy/'.$name, array('screen_name'=>$name));
+            $result = $connection->post('friendships/destroy/' . $name, array('screen_name' => $name));
         }
         return $result;
     }
-    function jaSigo ($name)
+
+    function jaSigo($name)
     {
         $login = $this->getLoginData();
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
-            $result = $connection->get("friendships/exists", array('user_a'=>$login['screen_name'], 'user_b'=>$name));
+            $result = $connection->get("friendships/exists", array('user_a' => $login['screen_name'], 'user_b' => $name));
         }
         return $result;
     }
-    function meSegue ($name)
+
+    function meSegue($name)
     {
         $login = $this->getLoginData();
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
-            $result = $connection->get("friendships/exists", array('user_a'=>$name, 'user_b'=>$login['screen_name']));
+            $result = $connection->get("friendships/exists", array('user_a' => $name, 'user_b' => $login['screen_name']));
         }
         return $result;
     }
-    function getNonFollowers($name, $limit = 10){
+
+    function getNonFollowers($name, $limit = 10)
+    {
         $login = $this->getLoginData();
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         $result = array();
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
-            $friends = $connection->get("friends/ids", array('screen_name'=>$name, 'stringify_ids'=>'true'));
-            $followers = $connection->get("followers/ids", array('screen_name'=>$name, 'stringify_ids'=>'true'));
+            $friends = $connection->get("friends/ids", array('screen_name' => $name, 'stringify_ids' => 'true'));
+            $followers = $connection->get("followers/ids", array('screen_name' => $name, 'stringify_ids' => 'true'));
             $result = array_diff_key(array_flip($friends->ids), array_flip($followers->ids));
             $result = array_keys($result);
-            if(count($result) > $limit){
-                $result = array_slice ($result, -$limit, $limit);
+            if (count($result) > $limit) {
+                $result = array_slice($result, 0, $limit);
             }
-            $users = $connection->get("users/lookup", array('user_id'=>implode(',', $result)));
+            $users = $connection->get("users/lookup", array('user_id' => implode(',', $result)));
             return $users;
         }
         return false;
     }
 
-    function countNonFollowers($name){
+    function countNonFollowers($name)
+    {
         $login = $this->getLoginData();
         $token = $this->twitter_token;
         $token_secret = $this->twitter_token_secret;
         $result = array();
         if ($token != '' && $token_secret != '') {
             $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET'], $token, $token_secret);
-            $friends = $connection->get("friends/ids", array('screen_name'=>$name, 'stringify_ids'=>'true'));
-            $followers = $connection->get("followers/ids", array('screen_name'=>$name, 'stringify_ids'=>'true'));
+            $friends = $connection->get("friends/ids", array('screen_name' => $name, 'stringify_ids' => 'true'));
+            $followers = $connection->get("followers/ids", array('screen_name' => $name, 'stringify_ids' => 'true'));
             $result = array_diff_key(array_flip($friends->ids), array_flip($followers->ids));
             return count($result);
         }
         return false;
     }
-    function searchTweetsDetails ($tweet, $p = 1, $rpp = 100)
+
+    function searchTweetsDetails($tweet, $p, $rpp)
     {
-        $sxml = file_get_contents('http://search.twitter.com/search.json?lang=pt&page='.$p.'&rpp='.$rpp.'&q=' . $tweet);
+        $tweet = urlencode($tweet);
+        $sxml = file_get_contents('http://search.twitter.com/search.json?lang='. LANG .'&page=' . $p . '&rpp=' . $rpp . '&q=' . $tweet);
         return json_decode($sxml);
     }
-    function getLimit ()
+
+    function getLimit()
     {
         $login = $this->getLoginData();
         $token = $this->twitter_token;
@@ -237,4 +257,3 @@ class Twitter_class
         return $result;
     }
 }
-?>
