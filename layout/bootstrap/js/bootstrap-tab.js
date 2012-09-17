@@ -17,8 +17,6 @@
  * limitations under the License.
  * ======================================================== */
 
-$("a[rel=left]").popover({placement:'left'});
-$("a[rel=right]").popover({placement:'right'});
 !function ($) {
 
     "use strict"; // jshint ;_;

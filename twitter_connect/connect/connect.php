@@ -6,8 +6,7 @@ if (isset($_GET['logout'])) {
     header('Location: ' . $_SERVER['HTTP_REFERER']);
 } else {
     $connection = new TwitterOAuth($_COOKIE['KEY'], $_COOKIE['SECRET']);
-//$callback = $_SERVER['DOCUMENT_ROOT'] . "/followback/twitter_connect/connect/callback.php";
-    $callback = "http://server/guilherme/followback/twitter_connect/connect/callback.php";
+    $callback = "http://" . $_SERVER['SERVER_NAME'] . "/twitter_connect/connect/callback.php";
     $tok = $connection->getRequestToken($callback);
     $_SESSION['twitter_oauth_token'] = $tok['oauth_token'];
     $_SESSION['twitter_oauth_token_secret'] = $tok['oauth_token_secret'];
