@@ -184,7 +184,7 @@ img {
 }
 
 #main-result {
-    min-height: 380px;
+    min-height: 450px;
     width: 540px;
     background-color: #FFFFFF;
     -webkit-border-radius: 8px;
@@ -255,7 +255,6 @@ img {
 .well {
     background-color: #FFF;
 }
-
 .thumbs-ph {
     height: 200px;
 }
@@ -286,7 +285,9 @@ img {
     padding-left: 5px;
     padding-top: 5px;
 }
-
+.large{
+    height: 550px;
+}
 .content {
     padding-left: 5px;
 }

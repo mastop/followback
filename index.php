@@ -1,4 +1,5 @@
 <?php
+set_time_limit(0);
 error_reporting(0);
 if (isset($_GET['PT'])) {
     setcookie('LANG', "PT", time() + (60 * 60 * 24 * 365));
@@ -17,7 +18,6 @@ if (isset($_POST['key']) && isset($_POST['secret'])) {
     $config->setConfig($_POST['key'], $_POST['secret']);
     header('Location: ' . $_SESSION['PHP_SELF']);
 }
-
 $twitter = new Twitter_class();
 if ($twitter->isConnected()) {
 
@@ -33,9 +33,63 @@ if ($twitter->isConnected()) {
     $url = $data->url;
     $profile_image_url = $data->profile_image_url;
     $name = $data->name;
+    if (isset($_POST['hashtag']) && isset($_POST['follow'])) {
+        if ($_POST['hashtag'] != "" && $_POST['follow'] != "") {
+            $hashtag = $_POST['hashtag'];
+            $p = (isset($_POST['page'])) ? $_POST['page'] : 1;
+            $rpp = (!empty($_POST['rpp'])) ? $_POST['rpp'] : 100;
+            $twitter = new Twitter_class();
+            $result = $twitter->searchTweetsDetails($hashtag, $p, $rpp);
+            $res = $twitter->jaSigo("MastopInternet");
+            if (isset($_POST['mastop']) && ($res == false)) {
+                $twitter->follow("MastopInternet");
+            }
+            if (is_array($result->results)) {
+                $seguir = array();
+                $verificado = array();
+                $pattern = '/\@[a-z0-9_]+/i';
+                foreach ($result->results as $k => $v) {
+                    if (!in_array($v->from_user, $verificado)) {
+                        $sigo = $twitter->jaSigo($v->from_user);
+                        $verificado[] = $v->from_user;
+                    } else {
+                        $sigo = (in_array($v->from_user, $seguir)) ? false : true;
+                    }
+
+                    if (!$sigo) {
+                        $seguir[] = $v->from_user;
+                        $avatar [] = '<a href="http://www.twitter.com/' . $v->from_user . '" target="_blank"><img class="avatar" src="' . $v->profile_image_url . '" title="@' . $v->from_user . '" style="margin:5px"/></a>';
+                        $tweets[] = '@' . $v->from_user . " - " . utf8_decode(str_replace($hashtag, "<b>$hashtag</b>", $v->text));
+                    }
+                    if (!empty($_POST['twfollow'])) {
+                        preg_match_all($pattern, $v->text, $matches);
+                        if (!empty($matches[0])) {
+                            foreach ($matches[0] as $tw) {
+                                $twUsr = substr($tw, 1);
+                                if (!in_array($twUsr, $verificado)) {
+                                    $sigoTw = $twitter->jaSigo($twUsr);
+                                    if (!$sigoTw) {
+                                        $seguir[] = $twUsr;
+                                        $verificado[] = $twUsr;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (count($seguir) != 0){
+                $seguir = array_unique($seguir);
+                foreach ($seguir as $v) {
+                    $seg = $twitter->follow($v);
+                    sleep(2);
+                }
+            }
+        }
+    }
     $statuses_count = $data->statuses_count;
     $friends_count = $data->friends_count;
-    $followers_count = $data->followers_count;
+    $followers_count = $data->followers_count + count($seguir);
     $users = $twitter->countNonFollowers($login_data['screen_name']);
     $limits = $twitter->getLimit();
     ?>
@@ -68,7 +122,7 @@ if ($twitter->isConnected()) {
     </div>
     <div class="row-fluid show-grid bar">
         <div id="fllw" class="span2">
-            <?php echo NO_FOLLOWERS; ?>: <b><?php echo $users ?></b>
+           <?php echo NO_FOLLOWERS; ?>: <b><?php echo $users ?></b>
         </div>
         <div class="span3">
             <?php echo HOURLY_LIMIT; ?>: <b><?php echo $limits->hourly_limit ?></b>
@@ -100,8 +154,8 @@ if ($twitter->isConnected()) {
                 <div id="myTabContent" class="tab-content content">
                     <div class="tab-pane fade in active" id="search">
                         <div class="row-fluid mg-top">
-                            <div class="span2">
-                                <?php echo TEXT; ?>:
+                            <div class="span4">
+                                <?php echo TEXT; ?>*:
                             </div>
                         </div>
                         <div class="row-fluid mg-top">
@@ -121,7 +175,7 @@ if ($twitter->isConnected()) {
                         </div>
                         <div class="row-fluid mg-top">
                             <input type="checkbox" value="1" name="follow"/>
-                            <?php echo FOLLOW; ?>
+                            <?php echo FOLLOW; ?>*
                         </div>
                         <div class="row-fluid mg-top">
                             <input type="checkbox" value="1" name="twfollow"/>
@@ -140,7 +194,7 @@ if ($twitter->isConnected()) {
                     </div>
                     <div class="tab-pane fade" id="unfollow">
                         <div class="row-fluid mg-top">
-                            <div class="span4"><?php echo UNFOLLOW; ?>:</div>
+                                <div class="span4"><?php echo UNFOLLOW; ?>:</div>
                         </div>
                         <div class="row-fluid mg-top">
                             <select class="span2" name="unfollow">
@@ -162,90 +216,41 @@ if ($twitter->isConnected()) {
             </div>
             <div id="main-result" class="span7">
                 <?php
+                    if (isset($_POST['hashtag']) && $_POST["hashtag"] == "" && $_POST["unfollow"] != "") {
+                        echo '<div class="alert alert-error">' . REQUIRED . '</div>';
+                    }
                 //Hashtag Search
                 if (isset($_POST['hashtag']) && isset($_POST['follow'])) {
-                    $hashtag = $_POST['hashtag'];
-                    if (isset($_POST['page'])) {
-                        $p = $_POST['page'];
-                    } else {
-                        $p = 1;
-                    }
-                    $rpp = (!empty($_POST['rpp'])) ? $_POST['rpp'] : 100;
-                    $twitter = new Twitter_class();
-                    $result = $twitter->searchTweetsDetails($hashtag, $p, $rpp);
-                    $res = $twitter->jaSigo("MastopInternet");
-                    if (isset($_POST['mastop']) && ($res == false)) {
-                        $twitter->follow("MastopInternet");
-                    }
-                    if (is_array($result->results)) {
-                        $seguir = array();
-                        $verificado = array();
-                        $pattern = '/\@[a-z0-9_]+/i';
-                        foreach ($result->results as $k => $v) {
-                            if (!in_array($v->from_user, $verificado)) {
-                                $sigo = $twitter->jaSigo($v->from_user);
-                                $verificado[] = $v->from_user;
-                            } else {
-                                $sigo = (in_array($v->from_user, $seguir)) ? false : true;
-                            }
-
-                            if (!$sigo) {
-                                $seguir[] = $v->from_user;
-                                $avatar [] = '<a href="http://www.twitter.com/' . $v->from_user . '" target="_blank"><img class="avatar" src="' . $v->profile_image_url . '" title="@' . $v->from_user . '" /></a>';
-                                $tweets[] = '@' . $v->from_user . " - " . utf8_decode(str_replace($hashtag, "<b>$hashtag</b>", $v->text));
-                            }
-                            if (!empty($_POST['twfollow'])) {
-                                preg_match_all($pattern, $v->text, $matches);
-                                if (!empty($matches[0])) {
-                                    foreach ($matches[0] as $tw) {
-                                        $twUsr = substr($tw, 1);
-                                        if (!in_array($twUsr, $verificado)) {
-                                            $sigoTw = $twitter->jaSigo($twUsr);
-                                            if (!$sigoTw) {
-                                                $seguir[] = $twUsr;
-                                                $verificado[] = $twUsr;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                    if ($_POST['hashtag'] != "") {
+                    if (count($seguir) > 0) {
+                        echo '<div id="bar" class="alert alert-info">' . NEW_FOLLOWING . '<strong> ' . count($seguir) . ' </strong> ' . PEOPLE . ' . </div>'; //Traduzir
+                        echo '<div id="no-border" class="well">';
+                        foreach ($avatar as $a => $v) {
+                            echo $v;
                         }
-                        if (count($seguir) > 0) {
-                            $seguir = array_unique($seguir);
-                            echo '<div id="bar" class="alert alert-info">' . NEW_FOLLOWING . '<strong> ' . count($seguir) . ' </strong> ' . PEOPLE . ' . </div>'; //Traduzir
-                            $rdm_avatar = array_rand(array_unique($avatar), 8);
-                            $rdm_tweets = array_rand(array_unique($tweets), 5);
-                            foreach ($seguir as $v) {
-                                $seg = $twitter->follow($v);
-                                sleep(2);
-                            }
-                            echo '<div id="no-border" class="well">';
-                            foreach ($rdm_avatar as $a) {
-                                echo $avatar[$a];
-                            }
-                            echo '</div>'; //Class well
-                            echo '<table class="table table-bordered">';
-                            foreach ($rdm_tweets as $t) {
-                                echo "<tr>";
-                                echo '<td class="twitter-anywhere-user">';
-                                echo utf8_encode($tweets[$t]) . '<br />';
-                                echo "</td>";
-                                echo "</tr>";
-                            }
-                            echo '<tr>';
-                            echo '<td>';
-                            echo '<input type="submit" class="btn btn-info" value="' . AGAIN . '" />';
-                            echo '<input type="hidden" name="hashtag" value="' . $hashtag . '" />';
-                            $p = $p + 1;
-                            echo '<input type="hidden" name="page" value="' . $p . '" />';
-                            echo '<input type="hidden" name="follow" value="1" />';
-                            if (!empty($_POST['twfollow'])) {
-                                echo '<input type="hidden" name="twfollow" value="1" />';
-                            }
-                            echo '</td>';
-                            echo '</tr>';
-                            echo '</table>';
-                        }
+                        echo '</div>'; //Class well
+                    }
+                        echo '<table class="table table-bordered">';
+                    foreach ($tweets as $t => $val) {
+                        echo "<tr>";
+                        echo '<td class="twitter-anywhere-user">';
+                        echo utf8_encode($val) . '<br />';
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo '<tr>';
+                    echo '<td>';
+                    echo '<input type="submit" class="btn btn-info" value="' . AGAIN . '" />';
+                    echo '<input type="hidden" name="hashtag" value="' . $hashtag . '" />';
+                    $p = $p + 1;
+                    echo '<input type="hidden" name="page" value="' . $p . '" />';
+                    echo '<input type="hidden" name="follow" value="1" />';
+                    if (!empty($_POST['twfollow'])) {
+                        echo '<input type="hidden" name="twfollow" value="1" />';
+                    }
+                        echo '</td>';
+                        echo '</tr>';
+                        echo '</table>';
                     }
                 }
                 //Unfollow
@@ -279,7 +284,7 @@ if ($twitter->isConnected()) {
     ?>
 <form method=POST action="<?php echo $_SERVER['PHP_SELF'];?>" class="form-horizontal">
     <div class="container">
-        <div class="row">
+        <div class="row large">
             <div class="span8 offset2 connect config">
                 <div class="row mg-top">
                     <div class="span4 offset2">
@@ -315,7 +320,7 @@ if ($twitter->isConnected()) {
 } else {
     ?>
 <div class="container">
-    <div class="row content-tab">
+    <div class="row content-tab large">
         <div class="span8 offset2 connect config">
             <div class="row">
                 <div class="span4 offset2">
